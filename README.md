@@ -1,68 +1,60 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### App.js의 다른 버전
+이 프로젝트의 /src/App.js
 
-## Available Scripts
+```javascript
+import React, { Component } from 'react';
+import Axios from 'axios';
 
-In the project directory, you can run:
+class App extends Component {
+  state = {
+    data: {
+      userId: null,
+      id: null,
+      title: null,
+      completed: null,
+    },
+  };
 
-### `yarn start`
+  onclick = () => {
+	const { data } = this.state;
+    Axios.get("https://jsonplaceholder.typicode.com/todos/1")
+      .then((resp) => {
+        this.setState({
+          data: { data, ...resp.data },
+        });
+      });
+  };
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+  render() {
+	const { data } = this.state;
+    return (
+      <div>
+        <div>아이디: {data.userId}</div>
+        <div>제목: {data.title}</div>
+        <hr />
+        <h1>클릭하세요.</h1>
+        <button onClick={this.onclick}>클릭</button>
+      </div>
+    );
+  }
+}
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+export default App;
+```
 
-### `yarn test`
+### onclick 함수 부분만 조금 다른 또다른 버전
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```javascript
+onclick = async () => {
+	const { data } = this.state;
 
-### `yarn build`
+	let resp = await Axios.get("https://jsonplaceholder.typicode.com/todos/1");
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+	this.setState({
+		data: { data, ...resp.data },
+	});
+};
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### 자세한 사항은 링크 참조
+[네이버 블로그](https://blog.naver.com/misschip/222044390371)
